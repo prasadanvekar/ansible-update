@@ -1,0 +1,22 @@
+---
+# tasks file for ypsman.update
+
+- name: running apt Cache update
+  apt:
+    update_cache: yes
+    cache_valid_time: 3600
+  when:
+    - ansible_distribution == 'Debian'
+    - ansible_distribution == 'Ubuntu'
+
+- name: running apt-get dist-upgrade and remove Old Packages
+  apt:
+    upgrade: dist
+    autoremove: yes
+  when:
+    - ansible_distribution == 'Debian'
+    - ansible_distribution == 'Ubuntu'
+
+- name: running yum updates
+  yum: name=* state=latest
+  when: ansible_os_family == "RedHat"
